@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>LipSync</title>
+    <script src='http://static.opentok.com/v2/js/opentok.min.js'></script>
+    <script type="text/javascript">
+      // Initialize API key, session, and token...
+      // Think of a session as a room, and a token as the key to get in to the room
+      // Sessions and tokens are generated on your server and passed down to the client
+      var apiKey = "45221262";
+      var sessionId = '{{sid}}';
+      var token = '{{token}}';
+
+      // Initialize session, set up event listeners, and connect
+      var session = OT.initSession(apiKey, sessionId);
+ 
+      session.on("streamCreated", function(event) {
+        session.subscribe(event.stream);
+      });
+     
+      session.connect(token, function(error) {
+        var publisher = OT.initPublisher();
+        session.publish(publisher);
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Test</h1>
+      <iframe id = "video" width="560" height="315" src="" frameborder="0" allowfullscreen style="
+    display: block; margin: 0 auto;" ></iframe>
+      <script>
+      var urlStore = ["https://www.youtube.com/embed/mrk8fn4rHOM", "https://www.youtube.com/embed/rUam2NeGZ_0", "https://www.youtube.com/embed/ejYyasKSVjw", "https://www.youtube.com/embed/_SoWPGzeN30", "https://www.youtube.com/embed/09R8_2nJtjg"];
+      var url = urlStore[Math.round((urlStore.length-1) * Math.random())]
+      document.getElementById('video').src = url;
+      </script>
+  </body>
+</html>

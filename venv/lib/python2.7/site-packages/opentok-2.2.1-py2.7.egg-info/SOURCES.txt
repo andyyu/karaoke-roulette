@@ -1,0 +1,14 @@
+README.rst
+setup.cfg
+setup.py
+opentok/__init__.py
+opentok/archives.py
+opentok/exceptions.py
+opentok/opentok.py
+opentok/session.py
+opentok/version.py
+opentok.egg-info/PKG-INFO
+opentok.egg-info/SOURCES.txt
+opentok.egg-info/dependency_links.txt
+opentok.egg-info/requires.txt
+opentok.egg-info/top_level.txt
