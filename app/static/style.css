@@ -1,0 +1,18 @@
+ #layoutContainer {
+ display: block;
+ width: 405px;
+ height: 240px;
+ position:relative;
+ top: 10px;
+ margin: 0 auto;
+}
+.OT_publisher{
+width: 200px !important;
+height: 200px !important;
+left: 0px !important;
+} 
+.OT_subscriber{
+width: 200px !important;
+height: 200px !important;
+left: 205px !important;
+}

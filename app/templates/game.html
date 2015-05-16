@@ -1,36 +1,79 @@
-<html>
-  <head>
-    <title>LipSync</title>
-    <script src='http://static.opentok.com/v2/js/opentok.min.js'></script>
-    <script type="text/javascript">
-      // Initialize API key, session, and token...
-      // Think of a session as a room, and a token as the key to get in to the room
-      // Sessions and tokens are generated on your server and passed down to the client
-      var apiKey = "45221262";
-      var sessionId = '{{sid}}';
-      var token = '{{token}}';
-
-      // Initialize session, set up event listeners, and connect
-      var session = OT.initSession(apiKey, sessionId);
- 
-      session.on("streamCreated", function(event) {
-        session.subscribe(event.stream);
-      });
-     
-      session.connect(token, function(error) {
-        var publisher = OT.initPublisher();
-        session.publish(publisher);
-      });
-    </script>
+<html><head>
+<p id = 'fuck'> fuck </p>
+    <style>
+    body {
+      background-image: url("../static/assets/backgroundtile.png");
+      background-repeat: repeat-x;
+    }
+    </style>
+    <title>Video Chat Container</title>
+    <script src="http://static.opentok.com/v2/js/opentok.min.js"></script><link type="text/css" media="screen" rel="stylesheet" href="http://static.opentok.com/webrtc/v2.5.1/css/TB.min.css">
+    <script src="../static/assets/opentok-layout.js"></script>
+    <link href="../static/style.css" type="text/css" rel="stylesheet"></link>
+    <style type="text/css"></style>
   </head>
   <body>
-    <h1>Test</h1>
-      <iframe id = "video" width="560" height="315" src="" frameborder="0" allowfullscreen style="
-    display: block; margin: 0 auto;" ></iframe>
-      <script>
-      var urlStore = ["https://www.youtube.com/embed/mrk8fn4rHOM", "https://www.youtube.com/embed/rUam2NeGZ_0", "https://www.youtube.com/embed/ejYyasKSVjw", "https://www.youtube.com/embed/_SoWPGzeN30", "https://www.youtube.com/embed/09R8_2nJtjg"];
-      var url = urlStore[Math.round((urlStore.length-1) * Math.random())]
-      document.getElementById('video').src = url;
-      </script>
-  </body>
-</html>
+    <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+    <div id="layoutContainer">
+        <div id="subscriberContainer"></div>
+        <div id="publisherContainer"></div>
+    </div>
+    <div id="content" style="
+    position: relative;">
+      <p id="loadingtext" style="text-align: center; position: absolute; margin: 0 auto; display: block; left: 0; right: 0; top: 70px; font-family: 'Slabo 27px', serif; font-size: 1.5em;"> Waiting for other player...</p>
+      <img id="loading" src="/static/assets/loadingspinner.gif" width="100" height="100" style="position: absolute; margin: 0 auto; display: block; left: 0; right: 0; top: 165px;">
+      <iframe id="video" src="" width="400" height="400" frameborder="0" allowfullscreen="" style=" display: block; margin: 0 auto; border: 15px solid rgb(115,199,255);"> </iframe>
+    </div>
+  
+    <script type="text/javascript">
+    //'[id^="OT"]').style = "left= 400px;"; 
+    var layoutContainer = document.getElementById('layoutContainer');
+    var layout = initLayoutContainer(layoutContainer).layout;
+    var apiKey = "45228402";
+    var sessionId = '{{sid}}';
+    var token = '{{token}}';
+    var playersconnected = 0;
+
+    var session = OT.initSession(apiKey, sessionId);
+    session.on("streamCreated", function(event) {
+      session.subscribe(event.stream, "subscriberContainer",{width:200, height:200});
+      playersconnected++;
+    });
+    layout();
+    session.connect(token, function(error){
+      if (!error) {
+        var publisher = OT.initPublisher("publisherContainer",{width:200, height:200})
+        session.publish(publisher);
+        layout();
+        playersconnected++;
+      }
+    });
+    setInterval(startVideo, 1000);
+    function startVideo() {
+      if (playersconnected == 2 && (document.getElementsByClassName('OT_video-element').length == 2))
+      {
+        var x = 0;
+        var images = new Array("../static/assets/3.png", "../static/assets/2.png","../static/assets/1.png");
+        document.getElementById('loadingtext').style.visibility = 'hidden';
+        var i = setInterval(countdown, 2000);
+        function countdown()
+        {
+          if (x == images.length)
+          {
+           var urlStore = ["https://www.youtube.com/embed/mrk8fn4rHOM?autoplay=1", "https://www.youtube.com/embed/rUam2NeGZ_0?autoplay=1", "https://www.youtube.com/embed/ejYyasKSVjw?autoplay=1", "https://www.youtube.com/embed/_SoWPGzeN30?autoplay=1", "https://www.youtube.com/embed/09R8_2nJtjg?autoplay=1"];  
+             //proof of concept, implement Youtube API for full functionality
+             var key = '{{sid}}'.replace(/\D/g,''); 
+             var url = urlStore[Math.round(key%(urlStore.length-1))];
+             document.getElementById('video').src = url;
+             document.getElementById('loading').style.visibility = 'hidden';
+             clearInterval(i);
+           }
+           else
+            document.getElementById('loading').src=images[x];   
+          x++;  
+        }
+        playersconnected = 0;
+      }
+    }
+    </script>
+</body></html>
