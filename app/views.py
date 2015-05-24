@@ -13,13 +13,13 @@ def index():
 	sessions = models.Session.query.all()
 	for s in sessions:
 		if (s.player1 == None or s.player2 == None):
-			sid = s.s_id
+			sid = s.id
 	if sid =='':
 		opentok = OpenTok('45228402', 'cc334f55939e584275f9c3ba975114c4635953ec')
 		session = opentok.create_session()
 		sid = session.session_id
 		unicodedata.normalize('NFKD', sid).encode('ascii','ignore')
-		s = models.Session(s_id = sid, player1 = None, player2= None)
+		s = models.Session(id = sid, player1 = None, player2= None)
 		db.session.add(s)
 		db.session.commit()
 	return redirect('/game/' + sid)
@@ -29,7 +29,7 @@ def game(sid):
 	opentok = OpenTok('45228402', 'cc334f55939e584275f9c3ba975114c4635953ec')
 	session_id = unicode(sid)
 	token = opentok.generate_token(session_id)
-	session = models.Session.query.filter_by(s_id = sid).first()
+	session = models.Session.query.filter_by(id = sid).first()
 	if session.player1 == None:
 		session.player1 = token
 	else:
