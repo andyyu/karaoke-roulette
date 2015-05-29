@@ -9,6 +9,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
+api_key = ""        # Replace with your OpenTok API key.
+api_secret = ""     # Replace with your OpenTok API secret.
+
 class Session(db.Model):
     s_id = db.Column(db.String(512), primary_key=True)
     player1 = db.Column(db.String(512), index=True, unique=True, nullable=True)
@@ -40,7 +43,7 @@ def index():
         if (s.player1 == None or s.player2 == None):
             sid = s.s_id
     if sid =='':
-        opentok = OpenTok('45228402', 'cc334f55939e584275f9c3ba975114c4635953ec')
+        opentok = OpenTok(api_key, api_secret)
         session = opentok.create_session()
         sid = session.session_id
         unicodedata.normalize('NFKD', sid).encode('ascii','ignore')
@@ -51,12 +54,10 @@ def index():
 
 @app.route('/game/<sid>', methods=['GET', 'POST'])
 def game(sid):
-    opentok = OpenTok('45228402', 'cc334f55939e584275f9c3ba975114c4635953ec')
+    opentok = OpenTok(api_key, api_secret)
     session_id = unicode(sid)
     token = opentok.generate_token(session_id)
     session = Session.query.filter_by(s_id = sid).first()
-    print "FUCKKKKKKKKKK"
-    print session
     if session.player1 == None:
         session.player1 = token
     else:
