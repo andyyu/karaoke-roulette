@@ -1,6 +1,6 @@
 Karaoke Roulette
 =============
-A fun website inspired by a recent trend of snaps featuring people lipsyncing to popular songs. Matches random people together with video chat and provides a Youtube music video for them to sing along to.
+A fun website inspired by a recent trend of snaps featuring people lipsyncing to popular songs. Matches random people together with video chat and provides a Youtube music video for them to sing / lipsync along to.
 
 Dependencies
 -------------
