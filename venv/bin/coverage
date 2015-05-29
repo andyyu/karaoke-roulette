@@ -1,4 +1,4 @@
-#!/Users/Andy/Desktop/Projects/karaoke_roulette/venv/bin/python
+#!/Users/Andy/Desktop/krfb/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'coverage==3.7.1','console_scripts','coverage'
 __requires__ = 'coverage==3.7.1'
 import sys
